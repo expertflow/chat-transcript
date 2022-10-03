@@ -28,10 +28,11 @@ function messageFunction() {
     for (const msg in messages) {
 
         const message = messages[msg];
-        let time = message.header.timestamp.slice(11, 16);
         let date = message.header.timestamp.slice(0, 10).replace(/-/g, "/");
+        let dateTime = new Date(message.header.timestamp); //Convert UTC without GMT dateTime to Locale with GMT
+        let time = timeConvert(`${dateTime.getHours()}:${dateTime.getMinutes()}`);
         document.getElementById("chatDate").innerHTML = date;
-
+        // console.log(`Date and Time:, ${date} Time :, ${time}`);
       if (message.header.sender.type == 'BOT') {
 
         if (message.body.type == 'BUTTON') {
@@ -48,7 +49,7 @@ function messageFunction() {
                     const button = message.body.buttons[btn];
                     chatDiv += `<li class="">${button.title}</li>`;
                 }
-            chatDiv += `</ul><span class="message-stamp"><span class="chat-time">16:20</span></span></div></div>`;
+            chatDiv += `</ul><span class="message-stamp"><span class="chat-time">${time}</span></span></div></div>`;
         }
 
         if (message.body.type == 'URL') {
@@ -333,16 +334,14 @@ function messageFunction() {
     // printToPDF();
 }
 
-// function printToPDF() {
-//   var element = document.getElementById('transcriptPrint');
-//   var opt =
-//   {
-//     margin:       1,
-//     filename:     'chat-transcript.pdf',
-//     image:        { type: 'jpeg', quality: 0.98 },
-//     html2canvas:  { scale: 2 },
-//     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-//   };
+function timeConvert (time) {
+  // Check correct time format and split into components
+  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
-//   html2pdf().set(opt).from(element).save();
-// }
+  if (time.length > 1) { // If time format correct
+    time = time.slice (1);  // Remove full string match value
+    time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+    time[0] = +time[0] % 12 || 12; // Adjust hours
+  }
+  return time.join (''); // return adjusted time or original string
+}
