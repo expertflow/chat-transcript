@@ -27,12 +27,12 @@ function messageFunction() {
     let chatDiv = `<div>`;
     for (const msg in messages) {
 
-        const message = messages[msg];
-        let date = message.header.timestamp.slice(0, 10).replace(/-/g, "/");
-        let dateTime = new Date(message.header.timestamp); //Convert UTC without GMT dateTime to Locale with GMT
-        let time = timeConvert(`${dateTime.getHours()}:${dateTime.getMinutes()}`);
-        document.getElementById("chatDate").innerHTML = date;
-        // console.log(`Date and Time:, ${date} Time :, ${time}`);
+      const message = messages[msg];
+      let date = message.header.timestamp.slice(0, 10).replace(/-/g, "/");
+      let dateTime = new Date(message.header.timestamp); //Convert UTC without GMT dateTime to Locale with GMT
+      let time = timeConvert(`${dateTime.getHours()}:${dateTime.getMinutes()}`);
+      document.getElementById("chatDate").innerHTML = date;
+      
       if (message.header.sender.type == 'BOT') {
 
         if (message.body.type == 'BUTTON') {
@@ -129,8 +129,10 @@ function messageFunction() {
               </div>
             </div>
             <div class="chat-message-content file-type-message contact-type">
-            <span class="display-file contact-logo">
-            <img src="./images/genaric.svg"></span>
+            <span class="display-file contact-logo file-message">
+            <img src="./images/file-type.svg" alt="${message.body.additionalDetails.fileName}">
+            <span class="file-ext-main">${message.body.attachment.mimeType.split('/')[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'DOCX' : message.body.attachment.mimeType.split('/')[1]}</span>
+            </span>
             <div class="contact-inner">
                 <span class="card-label">${message.body.additionalDetails.fileName}</span>
                 <span class="card-description">
@@ -257,12 +259,14 @@ function messageFunction() {
             </div>
           </div>
           <div class="chat-message-content file-type-message contact-type">
-            <span class="display-file contact-logo">
-              <img src="./images/genaric.svg"></span>
+            <span class="display-file contact-logo file-message">
+            <img src="./images/file-type.svg" alt="${message.body.additionalDetails.fileName}">
+              <span class="file-ext-main">${message.body.attachment.mimeType.split('/')[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'DOCX' : message.body.attachment.mimeType.split('/')[1]}</span>
+              </span>
               <div class="contact-inner">
-                <span class="card-label">${message.body.additionalDetails.fileName}</span>
-                <span class="card-description">
-                  <a class="file-download" href="${message.body.attachment.mediaUrl}"> Download </a> </span>
+                  <span class="card-label">${message.body.additionalDetails.fileName}</span>
+                  <span class="card-description">
+                      <a class="file-download" href="${message.body.attachment.mediaUrl}"> Download </a> </span>
               </div>
               <span class="message-stamp"><span class="chat-time">${time}</span></span>
             </div>
@@ -311,14 +315,16 @@ function messageFunction() {
               <img src="./images/agent.png" alt="customer"/>
             </div>
           </div>
-            <div class="chat-message-content file-type-message contact-type">
-              <span class="display-file contact-logo">
-                <img src="./images/genaric.svg"></span>
-              <div class="contact-inner">
-                <span class="card-label">${message.body.additionalDetails.fileName}</span>
-                <span class="card-description">
-                    <a class="file-download" href="${message.body.attachment.mediaUrl}"> Download </a> </span>
-              </div>
+          <div class="chat-message-content file-type-message contact-type">
+            <span class="display-file contact-logo file-message">
+              <img src="./images/file-type.svg" alt="${message.body.additionalDetails.fileName}">
+                <span class="file-ext-main">${message.body.attachment.mimeType.split('/')[1] == 'vnd.openxmlformats-officedocument.wordprocessingml.document' ? 'DOCX' : message.body.attachment.mimeType.split('/')[1]}</span>
+                </span>
+                <div class="contact-inner">
+                    <span class="card-label">${message.body.additionalDetails.fileName}</span>
+                    <span class="card-description">
+                        <a class="file-download" href="${message.body.attachment.mediaUrl}"> Download </a> </span>
+                </div>
               <span class="message-stamp"><span class="chat-time">${time}</span></span>
             </div>
           </div>`;
