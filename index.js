@@ -5,38 +5,39 @@ const customer_channel_identifier = decodeURIComponent(params.get('customerIdent
 const channel_type_code = decodeURIComponent(params.get('channelType'));
 const conversation_id = decodeURIComponent(params.get('conversationId'));
 
-console.log("configurations :", ccm_url,customer_channel_identifier,channel_type_code,conversation_id);
+console.log("configurations :", ccm_url, customer_channel_identifier, channel_type_code, conversation_id);
 var messages = [];
 
 // Chat API Call
-const request = new XMLHttpRequest ();
+const request = new XMLHttpRequest();
 request.open("GET", `${ccm_url}/message/?customerChannelIdentifier=${customer_channel_identifier}&channelTypeCode=${channel_type_code}&conversationId=${conversation_id}`);
 request.send();
 request.onload = () => {
-  if(request.status === 200) {
+  if (request.status === 200) {
     messages = JSON.parse(request.response);
-    console.log("Messages :",messages);
+    console.log("Messages :", messages);
     messageFunction();
-  }else{
-  console.log(`error ${request.status} ${request.status} ${request.statusText}`)
+  } else {
+    console.log(`error ${request.status} ${request.status} ${request.statusText}`)
   }
 }
 
 //Function for Chat Messages Of BOT , AGENT and CUSTOMER
 function messageFunction() {
-    let chatDiv = `<div>`;
-    for (const msg in messages) {
+  let chatDiv = `<div>`;
+  for (const msg in messages) {
 
-      const message = messages[msg];
-      let date = message.header.timestamp.slice(0, 10).replace(/-/g, "/");
-      let dateTime = new Date(message.header.timestamp); //Convert UTC without GMT dateTime to Locale with GMT
-      let time = timeConvert(`${dateTime.getHours()}:${dateTime.getMinutes()}`);
-      document.getElementById("chatDate").innerHTML = date;
-      
-      if (message.header.sender.type == 'BOT') {
+    const message = messages[msg];
+    let date = message.header.timestamp.slice(0, 10).replace(/-/g, "/");
+    let dateTime = new Date(message.header.timestamp); //Convert UTC without GMT dateTime to Locale with GMT
+    let min = `${dateTime.getMinutes()}` <= 9 ? `0${dateTime.getMinutes()}` : `${dateTime.getMinutes()}`;
+    let time = timeConvert(`${dateTime.getHours()}:${min}`);
+    document.getElementById("chatDate").innerHTML = date;
 
-        if (message.body.type == 'BUTTON') {
-          chatDiv += `
+    if (message.header.sender.type == 'BOT') {
+
+      if (message.body.type == 'BUTTON') {
+        chatDiv += `
           <div class="chat-message agent-message bot-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img"> <img src="./images/robot-dark.svg" alt="Bot"> </div>
@@ -44,16 +45,16 @@ function messageFunction() {
             <div class="chat-message-content structured-message">
               <p><b>${message.body.additionalDetails.interactive.header.text}</b>
               <span>${message.body.additionalDetails.interactive.body.text}</span></p>`;
-              chatDiv += `<ul class="structured-actions">`;
-                for(const btn in message.body.buttons){
-                    const button = message.body.buttons[btn];
-                    chatDiv += `<li class="">${button.title}</li>`;
-                }
-            chatDiv += `</ul><span class="message-stamp"><span class="chat-time">${time}</span></span></div></div>`;
+        chatDiv += `<ul class="structured-actions">`;
+        for (const btn in message.body.buttons) {
+          const button = message.body.buttons[btn];
+          chatDiv += `<li class="">${button.title}</li>`;
         }
+        chatDiv += `</ul><span class="message-stamp"><span class="chat-time">${time}</span></span></div></div>`;
+      }
 
-        if (message.body.type == 'URL') {
-          chatDiv += `
+      if (message.body.type == 'URL') {
+        chatDiv += `
           <div class="chat-message agent-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -70,10 +71,10 @@ function messageFunction() {
               </p>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'VIDEO') {
-          chatDiv += `
+      if (message.body.type == 'VIDEO') {
+        chatDiv += `
           <div class="chat-message user-message ">
             <div class="profile-pic">
                 <div class="profile-pic-area user-img">
@@ -94,10 +95,10 @@ function messageFunction() {
 
           </div>
       </div>`;
-        }
+      }
 
-        if (message.body.type == 'IMAGE') {
-          chatDiv += `
+      if (message.body.type == 'IMAGE') {
+        chatDiv += `
           <div class="chat-message agent-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -118,10 +119,10 @@ function messageFunction() {
               </p>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'FILE') {
-          chatDiv += `
+      if (message.body.type == 'FILE') {
+        chatDiv += `
           <div class="chat-message agent-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -141,10 +142,10 @@ function messageFunction() {
             <span class="message-stamp"><span class="chat-time">${time}</span></span>
         </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'LOCATION') {
-          chatDiv += `
+      if (message.body.type == 'LOCATION') {
+        chatDiv += `
           <div class="chat-message agent-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -165,10 +166,10 @@ function messageFunction() {
             </p>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'CONTACT') {
-          chatDiv += `
+      if (message.body.type == 'CONTACT') {
+        chatDiv += `
           <div class="chat-message agent-message bot-message">
             <div class="profile-pic">
                 <div class="profile-pic-area user-img"> <img src="./images/robot-dark.svg" alt="Bot"> </div>
@@ -177,20 +178,20 @@ function messageFunction() {
                 <span class="display-file contact-logo">
                     <img src="/assets/images/dummy-user.svg"></span>
                     <div class="contact-inner">`;
-                    for(const phone in message.body.contacts){
-                        const contact = message.body.contacts[phone];
-                        chatDiv +=`<span class="card-label">${contact.name.formattedName}</span>
+        for (const phone in message.body.contacts) {
+          const contact = message.body.contacts[phone];
+          chatDiv += `<span class="card-label">${contact.name.formattedName}</span>
                         <span class="card-description"><a href="https://api.whatsapp.com/send?phone=${contact.phones[0].phone}&text=Hello%2C%20I%20want%20more%20info%20about%20the%20product." target="_blank">
                         ${contact.phones[0].phone}</a></span>`;
-                      }
-                    chatDiv +=`</div>
+        }
+        chatDiv += `</div>
                 <span class="message-stamp"><span class="chat-time">${time}</span></span>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'PLAIN') {
-          chatDiv += `
+      if (message.body.type == 'PLAIN') {
+        chatDiv += `
           <div class="chat-message agent-message bot-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -202,25 +203,25 @@ function messageFunction() {
                 <span class="message-stamp"><span class="chat-time">${time}</span></span></p>
             </div>
           </div>`;
-        }
       }
-      if(message.header.sender.type == 'AGENT') {
+    }
+    if (message.header.sender.type == 'AGENT') {
 
-        if (message.body.type == 'NOTIFICATION') {
-            if (message.body.notificationType == 'AGENT_UNSUBSCRIBED') {
-              chatDiv += `
+      if (message.body.type == 'NOTIFICATION') {
+        if (message.body.notificationType == 'AGENT_UNSUBSCRIBED') {
+          chatDiv += `
               <div class="line-info"><span>${message.header.sender.participant.keycloakUser.username} left the Conversation</span></div>
               `;
-            }
-            if (message.body.notificationType == 'AGENT_SUBSCRIBED') {
-              chatDiv += `
+        }
+        if (message.body.notificationType == 'AGENT_SUBSCRIBED') {
+          chatDiv += `
               <div class="line-info"><span>${message.header.sender.participant.keycloakUser.username} joined the Conversation</span></div>
               `;
-            }
         }
+      }
 
-        if (message.body.type == 'PLAIN') {
-          chatDiv += `
+      if (message.body.type == 'PLAIN') {
+        chatDiv += `
           <div class="chat-message agent-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -232,10 +233,10 @@ function messageFunction() {
                 <span class="message-stamp"><span class="chat-time">${time}</span></span></p>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'IMAGE') {
-          chatDiv += `
+      if (message.body.type == 'IMAGE') {
+        chatDiv += `
           <div class="chat-message agent-message">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -248,10 +249,10 @@ function messageFunction() {
               <span class="message-stamp"><span class="chat-time">${time}</span></span></p>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'FILE') {
-          chatDiv += `
+      if (message.body.type == 'FILE') {
+        chatDiv += `
           <div class="chat-message agent-message">
           <div class="profile-pic">
             <div class="profile-pic-area user-img">
@@ -271,12 +272,12 @@ function messageFunction() {
               <span class="message-stamp"><span class="chat-time">${time}</span></span>
             </div>
           </div>`;
-        }
       }
-      if(message.header.sender.type == 'CUSTOMER') {
-        if (message.body.type == 'PLAIN') {
+    }
+    if (message.header.sender.type == 'CUSTOMER') {
+      if (message.body.type == 'PLAIN') {
 
-          chatDiv += `
+        chatDiv += `
           <div class="chat-message user-message ">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -289,10 +290,10 @@ function messageFunction() {
             </div>
           </div>`;
 
-        }
+      }
 
-        if (message.body.type == 'IMAGE') {
-          chatDiv += `
+      if (message.body.type == 'IMAGE') {
+        chatDiv += `
           <div class="chat-message user-message ">
             <div class="profile-pic">
               <div class="profile-pic-area user-img">
@@ -305,10 +306,10 @@ function messageFunction() {
               <span class="message-stamp"><span class="chat-time">${time}</span></span></p>
             </div>
           </div>`;
-        }
+      }
 
-        if (message.body.type == 'FILE') {
-          chatDiv += `
+      if (message.body.type == 'FILE') {
+        chatDiv += `
           <div class="chat-message user-message ">
           <div class="profile-pic">
             <div class="profile-pic-area user-img">
@@ -328,26 +329,25 @@ function messageFunction() {
               <span class="message-stamp"><span class="chat-time">${time}</span></span>
             </div>
           </div>`;
-        }
       }
     }
-    chatDiv+='</div>';
-    document.getElementById("msg").innerHTML = chatDiv;
+  }
+  chatDiv += '</div>';
+  document.getElementById("msg").innerHTML = chatDiv;
 
-    setTimeout(function(){
-      window.print();
-   }, 2000);//wait 2 seconds
-    // printToPDF();
+  setTimeout(function () {
+    window.print();
+  }, 2000);//wait 2 seconds
 }
 
-function timeConvert (time) {
+function timeConvert(time) {
   // Check correct time format and split into components
-  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
   if (time.length > 1) { // If time format correct
-    time = time.slice (1);  // Remove full string match value
+    time = time.slice(1);  // Remove full string match value
     time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
     time[0] = +time[0] % 12 || 12; // Adjust hours
   }
-  return time.join (''); // return adjusted time or original string
+  return time.join(''); // return adjusted time or original string
 }

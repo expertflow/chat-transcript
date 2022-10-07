@@ -1,8 +1,10 @@
 * {
-      -webkit-print-color-adjust: exact !important;   /* Chrome, Safari, Edge */
-      color-adjust: exact !important;
-      margin: 0;
-      font-family: Roboto, 'Open Sans', sans-serif;                 /*Firefox*/
+    -webkit-print-color-adjust: exact !important;
+    /* Chrome, Safari, Edge */
+    color-adjust: exact !important;
+    margin: 0;
+    font-family: Roboto, 'Open Sans', sans-serif;
+    /*Firefox*/
 }
 
 html,
@@ -161,8 +163,8 @@ body {
 
 .chat-message-content.image-type .message-stamp {
     position: absolute;
-    width:100%;
-    left:0;
+    width: 100%;
+    left: 0;
     text-align: right;
     bottom: 3px;
     background: linear-gradient(to top, #02020282 0, #02020273 40%, #02020214 100%);
@@ -233,7 +235,7 @@ body {
 
 /* .chat-message.agent-message {
     flex-direction: row-reverse; */
-    /* direction: rtl; */
+/* direction: rtl; */
 /* } */
 
 .chat-message.agent-message.arabic {
@@ -330,16 +332,16 @@ body {
 }
 
 /* Quoted response */
-.chat-message-content.quoted-reply:before{
-border-top-color: #79a31d;
+.chat-message-content.quoted-reply:before {
+    border-top-color: #79a31d;
 
 }
 
-.quoted-response{
+.quoted-response {
     margin: -8px -10px 8px !important;
-padding: 8px 10px;
-background: #ceddb9;
-border-left: 3px solid #79a31d;
+    padding: 8px 10px;
+    background: #ceddb9;
+    border-left: 3px solid #79a31d;
 
 
 }
@@ -376,11 +378,11 @@ border-left: 3px solid #79a31d;
     padding: 15px 0;
 }
 
-.file-message{
+.file-message {
     position: relative;
 }
 
-.file-name{
+.file-name {
     white-space: pre;
     max-width: 200px;
     overflow: hidden;
