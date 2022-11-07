@@ -404,3 +404,16 @@ body {
     text-align: center;
     border-radius: 4px;
 }
+.audioPlayer {
+    width: 400px;
+}
+
+.videoPlayer {
+    height: 120px;
+    width: 220px;
+}
+
+.imageViewer {
+    width: 250px;
+    height: auto;
+}

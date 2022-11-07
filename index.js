@@ -84,7 +84,7 @@ function messageFunction() {
             <div class="chat-message-content file-type-message image-type">
               <p>
                 <span>
-                  <video width="200px" height="200px" autoplay>
+                  <video class="videoPlayer" autoplay>
                     <source src="${message.body.attachment.mediaUrl}" type="video/mp4">
                   Your browser does not support the video tag.
                   </video>
@@ -111,7 +111,7 @@ function messageFunction() {
                 <a target="_blank"
                 href="${message.body.attachment.mediaUrl}"><img
                 src="${message.body.attachment.mediaUrl}"
-                height="50px" width="50px">
+                class="imageViewer">
               </a>
                 <span class="message-stamp">
                   <span class="chat-time">${time}</span>
@@ -235,6 +235,54 @@ function messageFunction() {
           </div>`;
       }
 
+      if (message.body.type == 'VIDEO') {
+        chatDiv += `
+          <div class="chat-message user-message ">
+            <div class="profile-pic">
+              <div class="profile-pic-area user-img">
+                <img src="./images/agent.png" alt="agent"/>
+              </div>
+            </div>
+            <div class="chat-message-content file-type-message image-type">
+              <p>
+                <span>
+                  <video class="videoPlayer" autoplay>
+                    <source src="${message.body.attachment.mediaUrl}" type="video/mp4">
+                  Your browser does not support the video tag.
+                  </video>
+                </span>
+                <span class="message-stamp">
+                  <span class="chat-time">${time}</span>
+                </span></p>
+
+          </div>
+      </div>`;
+      }
+
+      if (message.body.type == 'AUDIO') {
+        chatDiv += `
+          <div class="chat-message user-message ">
+            <div class="profile-pic">
+              <div class="profile-pic-area user-img">
+                <img src="./images/agent.png" alt="agent"/>
+              </div>
+            </div>
+            <div class="chat-message-content file-type-message image-type">
+              <p>
+                <span>
+                  <audio class="audioPlayer" controls>
+                    <source src="${message.body.attachment.mediaUrl}" type="audio/mpeg">
+                  Your browser does not support the video tag.
+                  </audio>
+                </span>
+                <span class="message-stamp">
+                  <span class="chat-time">${time}</span>
+                </span></p>
+
+          </div>
+      </div>`;
+      }
+
       if (message.body.type == 'IMAGE') {
         chatDiv += `
           <div class="chat-message agent-message">
@@ -244,7 +292,7 @@ function messageFunction() {
               </div>
             </div>
             <div class="chat-message-content">
-              <p><a target="_blank" href="${message.body.attachment.mediaUrl}"><img src="${message.body.attachment.mediaUrl}" height="200px" width="200px"></a>
+              <p><a target="_blank" href="${message.body.attachment.mediaUrl}"><img src="${message.body.attachment.mediaUrl}" class="imageViewer"></a>
               <span>${message.body.caption}</span>
               <span class="message-stamp"><span class="chat-time">${time}</span></span></p>
             </div>
@@ -292,6 +340,54 @@ function messageFunction() {
 
       }
 
+      if (message.body.type == 'VIDEO') {
+        chatDiv += `
+          <div class="chat-message user-message ">
+            <div class="profile-pic">
+              <div class="profile-pic-area user-img">
+                <img src="./images/agent.png" alt="customer"/>
+              </div>
+            </div>
+            <div class="chat-message-content file-type-message image-type">
+              <p>
+                <span>
+                  <video class="videoPlayer" autoplay>
+                    <source src="${message.body.attachment.mediaUrl}" type="video/mp4">
+                  Your browser does not support the video tag.
+                  </video>
+                </span>
+                <span class="message-stamp">
+                  <span class="chat-time">${time}</span>
+                </span></p>
+
+          </div>
+      </div>`;
+      }
+
+      if (message.body.type == 'AUDIO') {
+        chatDiv += `
+          <div class="chat-message user-message ">
+            <div class="profile-pic">
+              <div class="profile-pic-area user-img">
+                <img src="./images/agent.png" alt="customer"/>
+              </div>
+            </div>
+            <div class="chat-message-content file-type-message image-type">
+              <p>
+                <span>
+                  <audio class="audioPlayer" controls>
+                    <source src="${message.body.attachment.mediaUrl}" type="audio/mpeg">
+                  Your browser does not support the video tag.
+                  </audio>
+                </span>
+                <span class="message-stamp">
+                  <span class="chat-time">${time}</span>
+                </span></p>
+
+          </div>
+      </div>`;
+      }
+
       if (message.body.type == 'IMAGE') {
         chatDiv += `
           <div class="chat-message user-message ">
@@ -301,7 +397,7 @@ function messageFunction() {
               </div>
             </div>
             <div class="chat-message-content">
-              <p><a target="_blank" href="${message.body.attachment.mediaUrl}"><img src="${message.body.attachment.mediaUrl}" height="200px" width="200px"></a>
+              <p><a target="_blank" href="${message.body.attachment.mediaUrl}"><img src="${message.body.attachment.mediaUrl}" class="imageViewer"></a>
               <span>${message.body.caption}</span>
               <span class="message-stamp"><span class="chat-time">${time}</span></span></p>
             </div>
