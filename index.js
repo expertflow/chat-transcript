@@ -3,6 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const ccm_url = decodeURIComponent(params.get('ccmUrl'));
 const customer_channel_identifier = decodeURIComponent(params.get('customerIdentifier'));
 const channel_type_code = decodeURIComponent(params.get('channelType'));
+const clickState = decodeURIComponent(params.get('state'));
 const conversation_id = decodeURIComponent(params.get('conversationId'));
 
 console.log("configurations :", ccm_url, customer_channel_identifier, channel_type_code, conversation_id);
@@ -430,10 +431,12 @@ function messageFunction() {
   }
   chatDiv += '</div>';
   document.getElementById("msg").innerHTML = chatDiv;
-
-  setTimeout(function () {
-    window.print();
-  }, 2000);//wait 2 seconds
+  
+    setTimeout(function () {
+      if (clickState == 'download') {
+        window.print();
+      }
+    }, 2000);//wait 2 seconds
 }
 
 function timeConvert(time) {
